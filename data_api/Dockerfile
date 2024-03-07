@@ -1,5 +1,5 @@
 #Dockeraizing data APP
-FROM python:3.11
+FROM python:3.10
 
 RUN mkdir /app
 
