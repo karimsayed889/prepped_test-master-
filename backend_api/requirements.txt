@@ -92,9 +92,9 @@ stack-data==0.6.3
 sympy==1.12
 terminado==0.18.0
 tinycss2==1.2.1
-torch==2.1.1+cpu
-torchaudio==2.1.1+cpu
-torchvision==0.16.1+cpu
+torch==2.1.1 --index-url @ https://download.pytorch.org/whl/cpu-cxx11-abi/torch-2.1.1%2Bcpu.cxx11.abi-cp310-cp310-linux_x86_64.whl#sha256=bd5275b330a05e5d5d42f89b6a6ebd9fb98aa9b0e104c2e34fb52c8efae3eb12
+torchaudio==2.1.1 --index-url @ https://download.pytorch.org/whl/cpu/torchaudio-2.1.1%2Bcpu-cp310-cp310-linux_x86_64.whl#sha256=ab0450b7047748c7bdceede3802eff4869dbad966275aa5d0deb237cafb50cd8
+torchvision==0.16.1 --index-url @ https://download.pytorch.org/whl/cpu/torchvision-0.16.1%2Bcpu-cp310-cp310-linux_x86_64.whl#sha256=52442b5408dab35fedc6ccd75a7df38aadb6eb5d078184ac04ba7c1a9db8ae9c
 tornado==6.3.3
 traitlets==5.13.0
 types-python-dateutil==2.8.19.14
