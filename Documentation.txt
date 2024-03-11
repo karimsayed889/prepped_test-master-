@@ -1,6 +1,6 @@
 ---
 #Documentation For the steps Done 
-1- Dockerizing & packaging of both applications 
+1- Dockerizing & packaging of both applications under each folder (backend_api/Dockerfile, data_api/Dockerfile)
     1.1- Creating Docker file for both Images.
     1.2- Some dependencies (torch*=CPU) were not availble under the pip default Repo, Had to redirect it to torch Repo
         ERROR: Could not find a version that satisfies the requirement torch==2.1.1+cpu (from versions: 1.11.0, 1.12.0, 1.12.1, 1.13.0, 1.13.1, 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.1.2, 2.2.0, 2.2.1)
