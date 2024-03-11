@@ -1,6 +1,6 @@
 #!/bin/bash
 
-API_URL="http://backend_api/health_check"
+API_URL="127.0.0.1:8080"
 
 # Log file to store the health check results
 LOG_FILE="/var/log/health_check.log"
