@@ -1,6 +1,5 @@
-# Creating simple Kubernets cluster nodes #1 Master & 1 workernode
 ---
-- name : Creating Kubernets cluster Nodes 
+- name : Creating Kubernets security group 
   hosts: localhost 
 
   vars:  
@@ -11,13 +10,11 @@
     group: Kubernets-sg
     count: 1
     region: us-east-1
-    security_group: Kubernets-security group
     vpc_id: vpc-0c9769badb50cef8d
   
 #Security group pors
 # allows http 80 & SSh , 8080 for exposing backend
 # The ports required for a Kubernetes deployment are:
-
 # 2379/tcp: Kubernetes etcd server client API (on master nodes in multi-master deployments)
 
 # 2380/tcp: Kubernetes etcd server client API (on master nodes in multi-master deployments)
@@ -44,15 +41,17 @@
       amazon.aws.ec2_security_group:
         name: Kubernets-sg
         description: sg for Kubernets allow Kubernets ports & other
+        region: "{{region}}" 
         vpc_id: "{{vpc_id}}"
         rules:
         - proto: tcp
-            ports:
+          ports:
               - 80
               - 22
               - 8080
               - 2379
               - 2380 
+              - 2381
               - 6443
               - 8090
               - 8091
@@ -61,26 +60,10 @@
               - 10251
               - 10252
               - 10255
-            cidr_ip: 0.0.0.0/0
-            rule_desc: allow all on port 80
-
-    - name: Create Kubernets Master Instnace 
-      amazon.aws.ec2_instance: 
-      name: "Kuberents Master" 
-      state: running
-      key_name: "{{keypair}}"
-      instance_type: "{{instance_type}}"
-      security_group: "{{security_group}}""
-      image_id: "{{image}}"
-      
-    - name: Create Kubernets Worker Instnace 
-      amazon.aws.ec2_instance: 
-      name: "Kuberents Worker" 
-      state: running
-      key_name: "{{keypair}}"
-      instance_type: "{{instance_type}}"
-      security_group: "{{security_group}}""
-      image_id: "{{image}}"
-    
-    
-
+              - 10257
+              - 10259
+          cidr_ip: 0.0.0.0/0
+          rule_desc: allow all on port 80
+        rules_egress:
+                  - proto: all
+                    cidr_ip: 0.0.0.0/0

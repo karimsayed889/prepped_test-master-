@@ -1,0 +1,19 @@
+---
+- hosts: _Name_Kuberents_Master,_Name_Kuberents_Worker 
+  become: true
+  tasks:
+  
+  - name: Disabling Swap on all nodes
+    shell: swapoff -a
+
+  - name: Commenting Swap entries in /etc/fstab
+    replace:
+     path: /etc/fstab
+     regexp: '(.*swap*)'
+     replace: '#\1'
+
+  - name: Set SElinux in Permissive mode
+    shell: |
+        setenforce 0
+        sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
+

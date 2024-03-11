@@ -1,0 +1,26 @@
+---
+#Documentation For the steps Done 
+1- Dockerizing & packaging of both applications 
+    1.1- Creating Docker file for both Images.
+    1.2- Some dependencies (torch*=CPU) were not availble under the pip default Repo, Had to redirect it to torch Repo
+        ERROR: Could not find a version that satisfies the requirement torch==2.1.1+cpu (from versions: 1.11.0, 1.12.0, 1.12.1, 1.13.0, 1.13.1, 2.0.0, 2.0.1, 2.1.0, 2.1.1, 2.1.2, 2.2.0, 2.2.1)
+        ERROR: No matching distribution found for torch==2.1.1+cpu
+    1.3- Uploading packed images to Dockerhub
+        https://hub.docker.com/repository/docker/superhulcker/dummy-app
+        https://hub.docker.com/repository/docker/superhulcker/dummy-backend/general
+
+2- Creating Kubernets cluster on AWS 
+    2.1 Login to AWS with a user that have full access to EC2 at least.
+    2.2 Launch an instance as an ansible server 
+        2.2.1 sudo yum install -y ansible      #Install Ansible 
+        2.2.2 add the following lines to /etc/anisble/ansible.cfg   #note if not availbel you can create it.
+            inventory= inventory_update.aws_ec2.yml             # Location to dynamic invenotry update attached in repo under ansible
+            private_key_file=/home/ec2-user/Linux-amazon.pem    # Private key for AWS to be used with created EC2 , please create your own 
+            ansible_python_interpreter=/usr/bin/python3         # Ask ansible to use python interpeter specific version to prevent some modules from failing
+            host_key_checking = False                           # allow ansible bypass new hosts fingerprint key check during playbook running
+    2.3 Add dynamic inventory file in /etc/ansible/ or any other loaction but modify the inventory location under 2.2.2 with full path, this will dynamically update the inventory with ec2 instances under region us-east-1 with their tags, please modeify if you will use a differnt region
+    2.4 Go to playbooks and run them in sequence from _1 till _6,--> ansible-playbook _1.._6.yml
+     --> now we have the kubernets cluster is up & running , test using kubetcl 
+3- Deploying the application on Cluster
+    3.1 Run playbook --> ansible-playbook _7pods_service-deployment.yml
+

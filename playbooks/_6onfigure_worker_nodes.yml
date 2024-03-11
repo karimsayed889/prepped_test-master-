@@ -1,0 +1,20 @@
+---
+- hosts: _Name_Kuberents_Worker 
+  remote_user: ec2-user
+  vars:
+    token_file: join_token
+  tasks:
+    - name: Copying token to worker nodes
+      copy: src={{ token_file }} dest=join_command.sh mode=0777
+ 
+    - name: Joining worker nodes with kubernetes master
+      shell: sh join_command.sh --ignore-preflight-errors=all
+      become: true
+ 
+    - name: Copying required files & fixing permissions
+      shell: |
+         mkdir -p $HOME/.kube
+         sudo cp -i /etc/kubernetes/kubelet.conf $HOME/.kube/config
+         sudo chown $(id -u):$(id -g) $HOME/.kube/config
+         sudo chown -R  $(id -u):$(id -g) /var/lib/kubelet/
+

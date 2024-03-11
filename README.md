@@ -24,3 +24,6 @@ Update the backend and orchestrate migrating the 2 apps and script to kubernetes
 - Ensure you include the nessecorry documentations
 - Use git
 - Good luck
+
+
+route flask logs to stdout 

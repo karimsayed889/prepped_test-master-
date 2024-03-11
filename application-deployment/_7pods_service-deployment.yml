@@ -1,0 +1,19 @@
+---
+- name: Deploying pods with Deployments & services
+  vars_files:
+  - env-variables
+  hosts: _Name_Kuberents_Master
+  
+  tasks:
+  - name: Copy deployment & service yaml files with owner and permission
+    ansible.builtin.copy:
+      src: ./{{ item}}
+      dest: ~/
+      owner: ec2-user
+      group: ec2-user
+      mode: u=rw,g=rwx,o=rwx
+    with_items: "{{ pods }}"
+
+  - name: Launch deployments & services 
+    shell: kubectl create -f {{ item }}
+    with_items: "{{ pods }}"

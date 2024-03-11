@@ -1,0 +1,7 @@
+
+pods:
+- dummy-backend.yml
+- dummy-app.yml
+- backend-service.yml 
+- external_integration_secret.yml
+

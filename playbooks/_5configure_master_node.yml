@@ -1,0 +1,41 @@
+---
+- hosts: _Name_Kuberents_Master 
+  remote_user: ec2-user
+  vars:
+    token_file: join_token 
+  
+  tasks:
+  - name: Pulling images required for setting up a Kubernetes cluster
+    shell: kubeadm config images pull
+    become: true
+
+  - name: Initializing Kubernetes cluster
+    shell: kubeadm init --pod-network-cidr=10.244.0.0/16  --ignore-preflight-errors=all 
+    register: logs
+    become: true
+
+  - name: Storing Logs and Generated for future purpose.
+    local_action: copy content={{ logs.stdout }} dest=kube-adm.log
+    become: true
+      
+  - name: Copying required files
+    shell: export KUBECONFIG=/etc/kubernetes/admin.conf 
+    become: true
+    
+  - name: Copying required files
+    shell: |
+      mkdir -p $HOME/.kube
+      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: Install Network Add-on
+    command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+
+  - name: Generate join command
+    shell: kubeadm token create --print-join-command
+    register: output
+    become: true
+
+  - name: Storing Generated token for joining nodes.
+    local_action: copy content={{ output.stdout }} dest={{ token_file }}
+    become: true
